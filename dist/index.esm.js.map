@@ -1,0 +1,1 @@
+{"version":3,"file":"index.esm.js","sources":["../src/index.js"],"sourcesContent":["export const atlas = () => {\r\n    return \"This is the begining of AtlasJs!\"\r\n}"],"names":["atlas"],"mappings":"AAAa,IAAAA,EAAQ,WACjB,MAAO,kCACX"}
