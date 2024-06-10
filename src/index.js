@@ -1,14 +1,36 @@
-import axios from "axios";
+import axios, { isAxiosError } from "axios";
+
+function sendRequest(url, data = "{}", method = "get", headers = {}) {
+  let config = {
+    method: method,
+    maxBodyLength: Infinity,
+    url: url,
+    headers: headers,
+    data: data,
+  };
+
+  return axios
+    .request(config)
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      return {
+        error: true,
+        msg: error,
+      };
+    });
+}
 
 /**
  * This function fetches data from an API and returns an array of countries.
  *
- * @param {boolean} flag - Need flag of country or not.
- * @param {boolean} currency - Need currency of country or not.
- * @param {boolean} dialCode - Need dial code of country or not.
- * @returns {Promise<Object>} A Promise that resolves to an array of countries fetched from the API.
+ * @param {boolean} flag Need flag of country or not.
+ * @param {boolean} currency Need currency of country or not.
+ * @param {boolean} dialCode Need dial code of country or not.
+ * @returns {Promise<object>} A Promise that resolves to an array of countries fetched from the API.
  */
-export function getAllCountries(flag, currency, dialCode) {
+export async function getAllCountries(flag, currency, dialCode) {
   const moreInfo = [];
   const countries = [];
 
@@ -23,26 +45,69 @@ export function getAllCountries(flag, currency, dialCode) {
         )}`
       : "https://countriesnow.space/api/v0.1/countries/positions";
 
-  let config = {
-    method: "get",
-    maxBodyLength: Infinity,
-    url: url,
-    headers: {},
-  };
+  const response = await sendRequest(url);
 
-  return axios
-    .request(config)
-    .then((response) => {
-      if (moreInfo.length == 0) {
-        for (let country of response.data.data) {
-          countries.push(country["name"]);
-        }
-        return countries;
-      } else {
-        return response.data.data;
+  if (!response.error) {
+    if (moreInfo.length == 0) {
+      for (let country of response.data) {
+        countries.push(country["name"]);
       }
-    })
-    .catch((error) => {
-      return [error];
+      return countries;
+    } else {
+      return response.data;
+    }
+  } else {
+    return {
+      error: true,
+      msg: response.msg,
+    };
+  }
+}
+
+/**
+ * This function returns an array of country name and capitals.
+ * 
+ * @param {string} country Country name if you want to get capital of a specific country
+ * @returns {Promise<object>} A promise that resolves to an array of country name, country capital and iso2&3
+ */
+export async function getAllCapitals(country) {
+  if (country && country !== "") {
+    let data = JSON.stringify({
+      country: country,
     });
+    let headers = {
+      "Content-Type": "application/json",
+    };
+    let url = "https://countriesnow.space/api/v0.1/countries/capital";
+
+    const response = await sendRequest(url, data, "post", headers);
+
+    if (!response.error) {
+      return response.data;
+    } else {
+      if (
+        isAxiosError(response.msg) &&
+        response.msg.response &&
+        response.msg.response.status == 404
+      ) {
+        return {
+          error: true,
+          msg: `Country ${country} is not exist!`,
+        };
+      }
+    }
+  } else {
+    let url = "https://countriesnow.space/api/v0.1/countries/capital";
+
+    const response = await sendRequest(url);
+
+    if (!response.error) {
+      return response.data;
+    } else {
+      return {
+        error: true,
+        msg: response.msg,
+      };
+    }
+  }
 }
