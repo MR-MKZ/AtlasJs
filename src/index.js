@@ -1,26 +1,5 @@
 import axios, { isAxiosError } from "axios";
-
-function sendRequest(url, data = "{}", method = "get", headers = {}) {
-  let config = {
-    method: method,
-    maxBodyLength: Infinity,
-    url: url,
-    headers: headers,
-    data: data,
-  };
-
-  return axios
-    .request(config)
-    .then((response) => {
-      return response.data;
-    })
-    .catch((error) => {
-      return {
-        error: true,
-        msg: error,
-      };
-    });
-}
+import { sendRequest } from "./extension.js";
 
 /**
  * This function fetches data from an API and returns an array of countries.
@@ -66,7 +45,7 @@ export async function getAllCountries(flag, currency, dialCode) {
 
 /**
  * This function returns an array of country name and capitals.
- * 
+ *
  * @param {string} country Country name if you want to get capital of a specific country
  * @returns {Promise<object>} A promise that resolves to an array of country name, country capital and iso2&3
  */
