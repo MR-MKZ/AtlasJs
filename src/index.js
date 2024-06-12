@@ -1,5 +1,22 @@
 import axios, { isAxiosError } from "axios";
-import { sendRequest } from "./extension.js";
+import { sendRequest, AtlasFileReader } from "./extension.js";
+
+const atlasFileReader = new AtlasFileReader();
+
+/**
+ * This function returns and object that contains list of all regions.
+ * 
+ * @returns {Promise<object>} A Promise that resolves to an array of regions.
+ */
+export async function getAllRegions() {
+  try {
+    const regions = await atlasFileReader.getRegions()
+    return regions
+  } catch (error) {
+    console.error("Error getting regions: ",error)
+    return;
+  }
+}
 
 /**
  * This function fetches data from an API and returns an array of countries.

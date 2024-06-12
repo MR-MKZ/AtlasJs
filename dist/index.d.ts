@@ -1,4 +1,10 @@
 /**
+ * This function returns and object that contains list of all regions.
+ *
+ * @returns {Promise<object>} A Promise that resolves to an array of regions.
+ */
+export function getAllRegions(): Promise<object>;
+/**
  * This function fetches data from an API and returns an array of countries.
  *
  * @param {boolean} flag Need flag of country or not.

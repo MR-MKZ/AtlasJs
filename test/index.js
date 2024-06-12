@@ -1,9 +1,7 @@
-import { getAllCountries, getAllCapitals } from "../dist/index.cjs";
+import { getAllCountries, getAllCapitals, getAllRegions } from "../dist/index.cjs";
+import { AtlasFileReader } from "../src/extension.js";
+// import { getAllRegions } from "../src/index.js";
 
-(async () => {
-  let data = await getAllCountries();
-  console.log(data);
-
-  data = await getAllCapitals();
-  console.log(data);
-})();
+getAllRegions().then((regions) => {
+  console.log(regions);
+})
