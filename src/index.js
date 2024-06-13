@@ -5,16 +5,42 @@ const atlasFileReader = new AtlasFileReader();
 
 /**
  * This function returns and object that contains list of all regions.
- * 
+ *
  * @returns {Promise<object>} A Promise that resolves to an array of regions.
  */
 export async function getAllRegions() {
   try {
-    const regions = await atlasFileReader.getRegions()
-    return regions
+    const regions = await atlasFileReader.getRegions();
+    return regions;
   } catch (error) {
-    console.error("Error getting regions: ",error)
+    console.error("Error getting regions: ", error);
     return;
+  }
+}
+
+/**
+ * This function return subregions of a region.
+ * 
+ * @param {string} region region name to get subregions.
+ * @returns {Promise<object>} A Promise that resolves to an array of subregions of entered region.
+ */
+export async function getSubRegions(region) {
+  if (region && region !== "") {
+    try {
+      const findedRegion = await atlasFileReader.getRegionByName(region);
+      let regionId = findedRegion.id;
+      if (regionId != undefined) {
+        const subregion = await atlasFileReader.getSubRegion(regionId);
+        if (subregion != undefined) {
+          return subregion;
+        } else {
+          return;
+        }
+      }
+    } catch (error) {
+      console.error("Error getting subregions: ", error);
+      return;
+    }
   }
 }
 

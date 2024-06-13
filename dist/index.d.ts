@@ -5,6 +5,13 @@
  */
 export function getAllRegions(): Promise<object>;
 /**
+ * This function return subregions of a region.
+ *
+ * @param {string} region region name to get subregions.
+ * @returns {Promise<object>} A Promise that resolves to an array of subregions of entered region.
+ */
+export function getSubRegions(region: string): Promise<object>;
+/**
  * This function fetches data from an API and returns an array of countries.
  *
  * @param {boolean} flag Need flag of country or not.
