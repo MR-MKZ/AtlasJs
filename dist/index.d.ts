@@ -12,14 +12,22 @@ export function getAllRegions(): Promise<object>;
  */
 export function getSubRegions(region: string): Promise<object>;
 /**
- * This function fetches data from an API and returns an array of countries.
+ * This function gives you list of countries with some special informations.
  *
- * @param {boolean} flag Need flag of country or not.
- * @param {boolean} currency Need currency of country or not.
- * @param {boolean} dialCode Need dial code of country or not.
- * @returns {Promise<object>} A Promise that resolves to an array of countries fetched from the API.
+ * @param {boolean} currency do you want currency of country?
+ * @param {boolean} dialCode do you want dial code of country?
+ * @param {boolean} native do you want native of country?
+ * @param {boolean} nationality do you want nationality of country?
+ * @param {boolean} region do you want region of country?
+ * @param {boolean} subregion do you want subregion of country?
+ * @param {boolean} translations do you want translations of country?
+ * @param {boolean} timezones do you want timezones of country?
+ * @param {boolean} geolocation do you want geolocation of country?
+ * @param {boolean} emojies do you want emojies of country?
+ * @param {boolean} domain do you want domain of country?
+ * @returns {Promise<object>} A Promise that resolves to an array of countries with some special informations if you want.
  */
-export function getAllCountries(flag: boolean, currency: boolean, dialCode: boolean): Promise<object>;
+export function getAllCountries(currency: boolean, dialCode: boolean, native: boolean, nationality: boolean, region: boolean, subregion: boolean, translations: boolean, timezones: boolean, geolocation: boolean, emojies: boolean, domain: boolean): Promise<object>;
 /**
  * This function returns an array of country name and capitals.
  *

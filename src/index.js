@@ -13,14 +13,14 @@ export async function getAllRegions() {
     const regions = await atlasFileReader.getRegions();
     return regions;
   } catch (error) {
-    console.error("Error getting regions: ", error);
+    console.error("Error requesting regions: ", error);
     return;
   }
 }
 
 /**
  * This function return subregions of a region.
- * 
+ *
  * @param {string} region region name to get subregions.
  * @returns {Promise<object>} A Promise that resolves to an array of subregions of entered region.
  */
@@ -38,54 +38,65 @@ export async function getSubRegions(region) {
         }
       }
     } catch (error) {
-      console.error("Error getting subregions: ", error);
+      console.error("Error requesting subregions: ", error);
       return;
     }
   } else {
-    console.error("Error getting subregions: region name is required!");
+    console.error("Error requesting subregions: region name is required!");
     return;
   }
 }
 
 /**
- * This function fetches data from an API and returns an array of countries.
- *
- * @param {boolean} flag Need flag of country or not.
- * @param {boolean} currency Need currency of country or not.
- * @param {boolean} dialCode Need dial code of country or not.
- * @returns {Promise<object>} A Promise that resolves to an array of countries fetched from the API.
+ * This function gives you list of countries with some special informations.
+ * 
+ * @param {boolean} currency do you want currency of country?
+ * @param {boolean} dialCode do you want dial code of country?
+ * @param {boolean} native do you want native of country?
+ * @param {boolean} nationality do you want nationality of country?
+ * @param {boolean} region do you want region of country?
+ * @param {boolean} subregion do you want subregion of country?
+ * @param {boolean} translations do you want translations of country?
+ * @param {boolean} timezones do you want timezones of country?
+ * @param {boolean} geolocation do you want geolocation of country?
+ * @param {boolean} emojies do you want emojies of country?
+ * @param {boolean} domain do you want domain of country?
+ * @returns {Promise<object>} A Promise that resolves to an array of countries with some special informations if you want.
  */
-export async function getAllCountries(flag, currency, dialCode) {
-  const moreInfo = [];
-  const countries = [];
-
-  flag && moreInfo.push("flag");
-  currency && moreInfo.push("currency");
-  dialCode && moreInfo.push("dialCode");
-
-  let url =
-    moreInfo.length > 0
-      ? `https://countriesnow.space/api/v0.1/countries/info?returns=${moreInfo.join(
-          ","
-        )}`
-      : "https://countriesnow.space/api/v0.1/countries/positions";
-
-  const response = await sendRequest(url);
-
-  if (!response.error) {
-    if (moreInfo.length == 0) {
-      for (let country of response.data) {
-        countries.push(country["name"]);
-      }
+export async function getAllCountries(
+  currency,
+  dialCode,
+  native,
+  nationality,
+  region,
+  subregion,
+  translations,
+  timezones,
+  geolocation,
+  emojies,
+  domain
+) {
+  try {
+    const countries = await atlasFileReader.getCountries(
+      currency,
+      dialCode,
+      native,
+      nationality,
+      region,
+      subregion,
+      translations,
+      timezones,
+      geolocation,
+      emojies,
+      domain
+    );
+    if (countries != undefined) {
       return countries;
     } else {
-      return response.data;
+      return;
     }
-  } else {
-    return {
-      error: true,
-      msg: response.msg,
-    };
+  } catch (error) {
+    console.error("Error requesting countries: ", error);
   }
 }
 

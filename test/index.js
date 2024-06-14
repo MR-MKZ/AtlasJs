@@ -10,6 +10,6 @@ import { AtlasFileReader } from "../src/extension.js";
 
 // getAllRegions().then((regions) => console.log(regions))
 
-getSubRegions("europe").then((regions) => {
-  console.log(regions);
+getAllCountries(true, true, true, true, true, true, true, true, true, true, true).then((countries) => {
+  console.log(countries);
 });

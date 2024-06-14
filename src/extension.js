@@ -80,4 +80,69 @@ export class AtlasFileReader {
       return;
     }
   }
+
+  async getCountries(
+    currency,
+    dialCode,
+    native,
+    nationality,
+    region,
+    subregion,
+    translations,
+    timezones,
+    geolocation,
+    emojies,
+    domain
+  ) {
+    try {
+      let countries = [];
+      const data = await fsPromises.readFile(
+        "./assets/countries_states_cities.json",
+        "utf8"
+      );
+      for (const country of JSON.parse(data)) {
+        let countryObj = {};
+        countryObj["id"] = country["id"];
+        countryObj["name"] = country["name"];
+        countryObj["iso2"] = country["iso2"];
+        countryObj["iso3"] = country["iso3"];
+        countryObj["capital"] = country["capital"];
+        if (dialCode) countryObj["phone_code"] = country["phone_code"];
+        if (currency) {
+          countryObj["currency"] = country["currency"];
+          countryObj["currency_name"] = country["currency_name"];
+          countryObj["currency_symbol"] = country["currency_symbol"];
+        }
+        if (domain) countryObj["domain"] = country["tld"];
+        if (native) countryObj["native"] = country["native"];
+        if (nationality) countryObj["nationality"] = country["nationality"];
+        if (region) {
+          countryObj["region"] = country["region"];
+          countryObj["region_id"] = country["region_id"];
+        }
+        if (subregion) {
+          countryObj["subregion"] = country["subregion"];
+          countryObj["subregion_id"] = country["subregion_id"];
+        }
+        if (translations) countryObj["translations"] = country["translations"];
+
+        if (timezones) countryObj["timezones"] = country["timezones"];
+
+        if (geolocation) {
+          countryObj["latitude"] = country["latitude"];
+          countryObj["longitude"] = country["longitude"];
+        }
+
+        if (emojies) {
+          countryObj["emoji"] = country["emoji"];
+          countryObj["emojiU"] = country["emojiU"];
+        }
+        countries.push(countryObj);
+      }
+      return countries;
+    } catch (err) {
+      console.error("Error getting countries:", err);
+      return;
+    }
+  }
 }
