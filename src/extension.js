@@ -38,14 +38,19 @@ export class AtlasFileReader {
 
   async getRegionByName(regName) {
     try {
-      const data = await fsPromises.readFile("./assets/regions.json", "utf8");
-      for (const region of JSON.parse(data)) {
-        if (region.name.toLowerCase() === regName.toLowerCase()) {
-          return region;
+      if (isNaN(Number(regName))) {
+        const data = await fsPromises.readFile("./assets/regions.json", "utf8");
+        for (const region of JSON.parse(data)) {
+          if (region.name.toLowerCase() === regName.toLowerCase()) {
+            return region;
+          }
         }
+        console.error(`Region ${regName} not found`);
+        return;
+      } else {
+        console.error("Error finding region: region name can not be Number");
+        return;
       }
-      console.error(`Region ${regName} not found`);
-      return;
     } catch (err) {
       console.error("Error reading JSON file:", err);
       return;

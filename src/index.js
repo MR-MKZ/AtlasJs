@@ -28,8 +28,8 @@ export async function getSubRegions(region) {
   if (region && region !== "") {
     try {
       const findedRegion = await atlasFileReader.getRegionByName(region);
-      let regionId = findedRegion.id;
-      if (regionId != undefined) {
+      if (findedRegion != undefined) {
+        let regionId = findedRegion.id;
         const subregion = await atlasFileReader.getSubRegion(regionId);
         if (subregion != undefined) {
           return subregion;
@@ -41,6 +41,9 @@ export async function getSubRegions(region) {
       console.error("Error getting subregions: ", error);
       return;
     }
+  } else {
+    console.error("Error getting subregions: region name is required!");
+    return;
   }
 }
 
