@@ -1,5 +1,5 @@
-import {AtlasFileReader} from "./extension.js";
-import {raiseError} from "./AtlasError.js";
+import { AtlasFileReader } from "./extension.js";
+import { raiseError } from "./AtlasError.js";
 
 const atlasFileReader = new AtlasFileReader();
 
@@ -9,7 +9,7 @@ const atlasFileReader = new AtlasFileReader();
  * @returns {Promise<object>} A Promise that resolves to an array of regions.
  */
 export async function getAllRegions() {
-    return await atlasFileReader.getRegions();
+  return await atlasFileReader.getRegions();
 }
 
 /**
@@ -19,15 +19,15 @@ export async function getAllRegions() {
  * @returns {Promise<object>} A Promise that resolves to an array of subregions of entered region.
  */
 export async function getSubRegions(region) {
-    if (region && region !== "") {
-        const foundRegion = await atlasFileReader.getRegionByName(region);
-        if (foundRegion !== undefined) {
-            let regionId = foundRegion.id;
-            return await atlasFileReader.getSubRegion(regionId);
-        }
-    } else {
-        raiseError("region name is required!", "MISSING_REQUIRED_VALUE")
+  if (region && region !== "") {
+    const foundRegion = await atlasFileReader.getRegionByName(region);
+    if (foundRegion !== undefined) {
+      let regionId = foundRegion.id;
+      return await atlasFileReader.getSubRegion(regionId);
     }
+  } else {
+    raiseError("region name is required!", "MISSING_REQUIRED_VALUE");
+  }
 }
 
 /**
@@ -47,6 +47,19 @@ export async function getSubRegions(region) {
  * @returns {Promise<object>} A Promise that resolves to an array of countries with some special information if you want.
  */
 export async function getAllCountries(
+  currency,
+  dialCode,
+  native,
+  nationality,
+  region,
+  subregion,
+  translations,
+  timezones,
+  geolocation,
+  emojies,
+  domain
+) {
+  return await atlasFileReader.getCountries(
     currency,
     dialCode,
     native,
@@ -58,20 +71,7 @@ export async function getAllCountries(
     geolocation,
     emojies,
     domain
-) {
-    return await atlasFileReader.getCountries(
-        currency,
-        dialCode,
-        native,
-        nationality,
-        region,
-        subregion,
-        translations,
-        timezones,
-        geolocation,
-        emojies,
-        domain
-    );
+  );
 }
 
 /**
@@ -84,27 +84,25 @@ export async function getAllCountries(
  * @returns {Promise<object>} A Promise that resolves to an array of country states with some special informations if you want.
  */
 export async function getCountryStates(country, iso3, iso2, geolocation) {
-    if (
-        (country && country !== "") ||
-        (iso3 && iso3 !== "") ||
-        (iso2 && iso2 !== "")
-    ) {
-        if (country != null && country != undefined) {
-            country = country.toString();
-        }
-        if (iso3 != null && iso3 !== undefined) {
-            iso3 = iso3.toString();
-        }
-        if (iso2 != null && iso2 != undefined) {
-            iso2 = iso2.toString();
-        }
-        return await atlasFileReader.getStates(
-            country,
-            iso3,
-            iso2,
-            geolocation
-        );
-    } else {
-        raiseError("country name, iso3 or iso2 is missing, at least one of them is required!", "MISSING_REQUIRED_VALUE")
+  if (
+    (country && country !== "") ||
+    (iso3 && iso3 !== "") ||
+    (iso2 && iso2 !== "")
+  ) {
+    if (country != null && country != undefined) {
+      country = country.toString();
     }
+    if (iso3 != null && iso3 !== undefined) {
+      iso3 = iso3.toString();
+    }
+    if (iso2 != null && iso2 != undefined) {
+      iso2 = iso2.toString();
+    }
+    return await atlasFileReader.getStates(country, iso3, iso2, geolocation);
+  } else {
+    raiseError(
+      "country name, iso3 or iso2 is missing, at least one of them is required!",
+      "MISSING_REQUIRED_VALUE"
+    );
+  }
 }
