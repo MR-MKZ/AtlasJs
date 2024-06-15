@@ -12,7 +12,7 @@ export function getAllRegions(): Promise<object>;
  */
 export function getSubRegions(region: string): Promise<object>;
 /**
- * This function gives you list of countries with some special informations.
+ * This function gives you list of countries with some special information.
  *
  * @param {boolean} currency do you want currency of country?
  * @param {boolean} dialCode do you want dial code of country?
@@ -25,7 +25,7 @@ export function getSubRegions(region: string): Promise<object>;
  * @param {boolean} geolocation do you want geolocation of country?
  * @param {boolean} emojies do you want emojies of country?
  * @param {boolean} domain do you want domain of country?
- * @returns {Promise<object>} A Promise that resolves to an array of countries with some special informations if you want.
+ * @returns {Promise<object>} A Promise that resolves to an array of countries with some special information if you want.
  */
 export function getAllCountries(currency: boolean, dialCode: boolean, native: boolean, nationality: boolean, region: boolean, subregion: boolean, translations: boolean, timezones: boolean, geolocation: boolean, emojies: boolean, domain: boolean): Promise<object>;
 /**

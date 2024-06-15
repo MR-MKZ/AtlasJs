@@ -10,6 +10,8 @@ import { AtlasFileReader } from "../src/extension.js";
 
 // getAllCountries().then((country) => console.log(country))
 
-getCountryStates("iran", "irn", "ir", true).then((states) => {
+getCountryStates("ir", "irs", "isr", true).then((states) => {
   console.log(states);
-});
+}).catch((error) => {
+    console.log(error)
+})
