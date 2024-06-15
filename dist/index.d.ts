@@ -29,9 +29,12 @@ export function getSubRegions(region: string): Promise<object>;
  */
 export function getAllCountries(currency: boolean, dialCode: boolean, native: boolean, nationality: boolean, region: boolean, subregion: boolean, translations: boolean, timezones: boolean, geolocation: boolean, emojies: boolean, domain: boolean): Promise<object>;
 /**
- * This function returns an array of country name and capitals.
+ * This function gives you states of a country.
  *
- * @param {string} country Country name if you want to get capital of a specific country
- * @returns {Promise<object>} A promise that resolves to an array of country name, country capital and iso2&3
+ * @param {string} country country name to get states
+ * @param {string} iso3 country iso3 to get states
+ * @param {string} iso2 country iso2 to get states
+ * @param {boolean} geolocation do you want geolocation of each country state?
+ * @returns {Promise<object>} A Promise that resolves to an array of country states with some special informations if you want.
  */
-export function getAllCapitals(country: string): Promise<object>;
+export function getCountryStates(country: string, iso3: string, iso2: string, geolocation: boolean): Promise<object>;

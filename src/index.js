@@ -1,4 +1,3 @@
-import axios, { isAxiosError } from "axios";
 import { sendRequest, AtlasFileReader } from "./extension.js";
 
 const atlasFileReader = new AtlasFileReader();
@@ -49,7 +48,7 @@ export async function getSubRegions(region) {
 
 /**
  * This function gives you list of countries with some special informations.
- * 
+ *
  * @param {boolean} currency do you want currency of country?
  * @param {boolean} dialCode do you want dial code of country?
  * @param {boolean} native do you want native of country?
@@ -101,49 +100,48 @@ export async function getAllCountries(
 }
 
 /**
- * This function returns an array of country name and capitals.
+ * This function gives you states of a country.
  *
- * @param {string} country Country name if you want to get capital of a specific country
- * @returns {Promise<object>} A promise that resolves to an array of country name, country capital and iso2&3
+ * @param {string} country country name to get states
+ * @param {string} iso3 country iso3 to get states
+ * @param {string} iso2 country iso2 to get states
+ * @param {boolean} geolocation do you want geolocation of each country state?
+ * @returns {Promise<object>} A Promise that resolves to an array of country states with some special informations if you want.
  */
-export async function getAllCapitals(country) {
-  if (country && country !== "") {
-    let data = JSON.stringify({
-      country: country,
-    });
-    let headers = {
-      "Content-Type": "application/json",
-    };
-    let url = "https://countriesnow.space/api/v0.1/countries/capital";
-
-    const response = await sendRequest(url, data, "post", headers);
-
-    if (!response.error) {
-      return response.data;
-    } else {
-      if (
-        isAxiosError(response.msg) &&
-        response.msg.response &&
-        response.msg.response.status == 404
-      ) {
-        return {
-          error: true,
-          msg: `Country ${country} is not exist!`,
-        };
+export async function getCountryStates(country, iso3, iso2, geolocation) {
+  if (
+    (country && country != "") ||
+    (iso3 && iso3 != "") ||
+    (iso2 && iso2 != "")
+  ) {
+    try {
+      if (country != null && country != undefined) {
+        country = country.toString();
       }
+      if (iso3 != null && iso3 != undefined) {
+        iso3 = iso3.toString();
+      }
+      if (iso2 != null && iso2 != undefined) {
+        iso2 = iso2.toString();
+      }
+      const states = await atlasFileReader.getStates(
+        country,
+        iso3,
+        iso2,
+        geolocation
+      );
+      if (states != undefined) {
+        return states;
+      } else {
+        return;
+      }
+    } catch (error) {
+      console.error("Error requesting country states: ", error);
     }
   } else {
-    let url = "https://countriesnow.space/api/v0.1/countries/capital";
-
-    const response = await sendRequest(url);
-
-    if (!response.error) {
-      return response.data;
-    } else {
-      return {
-        error: true,
-        msg: response.msg,
-      };
-    }
+    console.error(
+      "Error requesting country states: country name is required! please enter country name, iso3 or iso2"
+    );
+    return;
   }
 }

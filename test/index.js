@@ -1,15 +1,15 @@
 import {
   getAllCountries,
-  getAllCapitals,
   getAllRegions,
-  getSubRegions
+  getSubRegions,
+  getCountryStates
 } from "../dist/index.cjs";
 import { AtlasFileReader } from "../src/extension.js";
 
-// import { getSubRegions } from "../src/index.js";
+// import { getCountryStates } from "../src/index.js";
 
-// getAllRegions().then((regions) => console.log(regions))
+// getAllCountries().then((country) => console.log(country))
 
-getAllCountries(true, true, true, true, true, true, true, true, true, true, true).then((countries) => {
-  console.log(countries);
+getCountryStates("iran", "irn", "ir", true).then((states) => {
+  console.log(states);
 });
