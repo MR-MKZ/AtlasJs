@@ -1,28 +1,28 @@
-import axios from "axios";
+// import axios from "axios";
 import { promises as fsPromises } from "fs";
 import { raiseError } from "./AtlasError.js";
 
-export function sendRequest(url, data = "{}", method = "get", headers = {}) {
-  let config = {
-    method: method,
-    maxBodyLength: Infinity,
-    url: url,
-    headers: headers,
-    data: data,
-  };
+// export function sendRequest(url, data = "{}", method = "get", headers = {}) {
+//   let config = {
+//     method: method,
+//     maxBodyLength: Infinity,
+//     url: url,
+//     headers: headers,
+//     data: data,
+//   };
 
-  return axios
-    .request(config)
-    .then((response) => {
-      return response.data;
-    })
-    .catch((error) => {
-      return {
-        error: true,
-        msg: error,
-      };
-    });
-}
+//   return axios
+//     .request(config)
+//     .then((response) => {
+//       return response.data;
+//     })
+//     .catch((error) => {
+//       return {
+//         error: true,
+//         msg: error,
+//       };
+//     });
+// }
 
 export class AtlasFileReader {
   constructor() {}
@@ -171,6 +171,60 @@ export class AtlasFileReader {
       }
     } else {
       raiseError("region name must be string", "INPUT_TYPE_ERR");
+    }
+  }
+
+  async getCities(countryName, stateName, geolocation) {
+    let cities = [];
+    if (isNaN(Number(countryName)) && isNaN(Number(stateName))) {
+      const data = await fsPromises.readFile(
+        "./assets/countries_states_cities.json",
+        "utf8"
+      );
+      let foundCountry = false;
+      let foundState = false;
+      for (const country of JSON.parse(data)) {
+        if (country["name"].toLowerCase() === countryName.toLowerCase()) {
+          foundCountry = true;
+          for (const state of country["states"]) {
+            if (state["name"].toLowerCase() === stateName.toLowerCase()) {
+              foundState = true;
+              for (const city of state["cities"]) {
+                let cityObj = {};
+                cityObj["id"] = city["id"];
+                cityObj["name"] = city["name"];
+                if (geolocation) {
+                  cityObj["latitude"] = city["latitude"];
+                  cityObj["longitude"] = city["longitude"];
+                }
+                cities.push(cityObj);
+              }
+            }
+          }
+        }
+      }
+      if (cities.length > 0) {
+        return cities;
+      } else {
+        if (foundCountry) {
+          if (foundState) {
+            raiseError(`There is no city for ${countryName},${stateName}`, "RESULT_NOT_FOUND");
+          } else {
+            raiseError(`State ${stateName} not found`, "RESULT_NOT_FOUND", {
+              state: "check entered state name: " + stateName,
+            });
+          }
+        } else {
+          raiseError(`Country ${countryName} not found`, "RESULT_NOT_FOUND", {
+            country: "check entered country name: " + countryName,
+          });
+        }
+      }
+    } else {
+      raiseError(
+        "country name and state name must be string",
+        "INPUT_TYPE_ERR"
+      );
     }
   }
 }

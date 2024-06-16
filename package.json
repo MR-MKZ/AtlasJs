@@ -1,7 +1,7 @@
 {
   "name": "@mr-mkz/atlas",
-  "version": "0.0.1",
-  "description": "Atlas is a library that gives you region, subregion, country, state and city names.",
+  "version": "1.0.0",
+  "description": "Atlas is a library that gives you region, subregion, country, state and city names with some special information if you want.",
   "type": "module",
   "source": "src/index.js",
   "exports": {
