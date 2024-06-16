@@ -1,6 +1,8 @@
 // import axios from "axios";
 import { promises as fsPromises } from "fs";
 import { raiseError } from "./AtlasError.js";
+import { join, dirname } from 'path';
+import { fileURLToPath } from 'url';
 
 // export function sendRequest(url, data = "{}", method = "get", headers = {}) {
 //   let config = {
@@ -24,17 +26,28 @@ import { raiseError } from "./AtlasError.js";
 //     });
 // }
 
+function getFilePath(filename) {
+  try {
+    const __filename = fileURLToPath(import.meta.url);
+    const __dirname = dirname(__filename);
+    const filePath = join(__dirname, '..', 'assets', filename);
+    return filePath;
+  } catch (error) {
+    console.error('Error reading file:', error);
+  }
+}
+
 export class AtlasFileReader {
   constructor() {}
 
   async getRegions() {
-    const data = await fsPromises.readFile("./assets/regions.json", "utf8");
+    const data = await fsPromises.readFile(getFilePath("regions.json"), "utf8");
     return JSON.parse(data);
   }
 
   async getRegionByName(regName) {
     if (isNaN(Number(regName))) {
-      const data = await fsPromises.readFile("./assets/regions.json", "utf8");
+      const data = await fsPromises.readFile(getFilePath("regions.json"), "utf8");
       for (const region of JSON.parse(data)) {
         if (region.name.toLowerCase() === regName.toLowerCase()) {
           return region;
@@ -48,7 +61,7 @@ export class AtlasFileReader {
 
   async getSubRegion(regionId) {
     let subregions = [];
-    const data = await fsPromises.readFile("./assets/subregions.json", "utf8");
+    const data = await fsPromises.readFile(getFilePath("subregions.json"), "utf8");
     for (const subregion of JSON.parse(data)) {
       if (subregion["region_id"] == regionId) {
         subregions.push(subregion);
@@ -79,7 +92,7 @@ export class AtlasFileReader {
   ) {
     let countries = [];
     const data = await fsPromises.readFile(
-      "./assets/countries_states_cities.json",
+      getFilePath("countries_states_cities.json"),
       "utf8"
     );
     for (const country of JSON.parse(data)) {
@@ -134,7 +147,7 @@ export class AtlasFileReader {
     ) {
       let states = [];
       const data = await fsPromises.readFile(
-        "./assets/countries_states_cities.json",
+        getFilePath("countries_states_cities.json"),
         "utf8"
       );
       for (const country of JSON.parse(data)) {
@@ -178,7 +191,7 @@ export class AtlasFileReader {
     let cities = [];
     if (isNaN(Number(countryName)) && isNaN(Number(stateName))) {
       const data = await fsPromises.readFile(
-        "./assets/countries_states_cities.json",
+        getFilePath("countries_states_cities.json"),
         "utf8"
       );
       let foundCountry = false;
