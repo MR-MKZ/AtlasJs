@@ -4,7 +4,7 @@ import { raiseError } from "./AtlasError.js";
 const atlasFileReader = new AtlasFileReader();
 
 /**
- * This function returns and object that contains list of all regions.
+ * This function returns an object that contains list of all regions.
  *
  * @returns {Promise<object>} A Promise that resolves to an array of regions.
  * 
