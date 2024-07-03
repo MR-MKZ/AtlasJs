@@ -3,6 +3,8 @@
 
 Atlas is a library that gives you region, subregion, country, state and city names with some special information if you want.
 
+![NPM Downloads](https://img.shields.io/npm/d18m/%40mr-mkz%2Fatlas)
+
 [Report Bugs](https://github.com/Mr-MKZ/AtlasJs/issues) |
 [Home Page](https://github.com/Mr-MKZ/AtlasJs#readme)
 
