@@ -48,33 +48,33 @@ import {
 // ----------------------------------------------------------------------------
 
 // Returns list of states for Iran.
-// getCountryStates("iran", "", "", true).then((states) => {
+// getCountryStates({"iran", "", "", true}).then((states) => {
 //   console.log(states);
 // }).catch((error) => {
 //   console.log(error);
 // })
 
-// getCountryStates("", "IRN", "", true).then((states) => {
+// getCountryStates({"", "IRN", "", true}).then((states) => {
 //   console.log(states);
 // }).catch((error) => {
 //   console.log(error);
 // })
 
-// getCountryStates("", "", "IR", true).then((states) => {
+// getCountryStates({"", "", "IR", true}).then((states) => {
 //   console.log(states);
 // }).catch((error) => {
 //   console.log(error);
 // })
 
 // Returns INPUT_TYPE_ERR error.
-// getCountryStates(12, "", "", true).then((states) => {
+// getCountryStates({12, "", "", true}).then((states) => {
 //   console.log(states);
 // }).catch((error) => {
 //   console.log(error);
 // })
 
 // Returns MISSING_REQUIRED_VALUE error.
-// getCountryStates("", "", "", true).then((states) => {
+// getCountryStates({"", "", "", true}).then((states) => {
 //   console.log(states);
 // }).catch((error) => {
 //   console.log(error);
@@ -83,21 +83,21 @@ import {
 // ----------------------------------------------------------------------------
 
 // Returns list of cities for Razavi Khorasan state of Iran.
-// getStateCities("iran", "razavi khorasan", true).then((cities) => {
+// getStateCities({"iran", "razavi khorasan", true}).then((cities) => {
 //   console.log(cities);
 // }).catch((error) => {
 //   console.log(error);
 // })
 
 // Returns INPUT_TYPE_ERR error.
-// getStateCities(12, "", true).then((cities) => {
+// getStateCities({12, "", true}).then((cities) => {
 //   console.log(cities);
 // }).catch((error) => {
 //   console.log(error);
 // })
 
 // Returns MISSING_REQUIRED_VALUE error.
-// getStateCities("", "", true).then((cities) => {
+// getStateCities({"", "", true}).then((cities) => {
 //   console.log(cities);
 // }).catch((error) => {
 //   console.log(error);

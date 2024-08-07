@@ -1,30 +1,8 @@
-// import axios from "axios";
 import { promises as fsPromises } from "fs";
 import { raiseError } from "./AtlasError.js";
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 
-// export function sendRequest(url, data = "{}", method = "get", headers = {}) {
-//   let config = {
-//     method: method,
-//     maxBodyLength: Infinity,
-//     url: url,
-//     headers: headers,
-//     data: data,
-//   };
-
-//   return axios
-//     .request(config)
-//     .then((response) => {
-//       return response.data;
-//     })
-//     .catch((error) => {
-//       return {
-//         error: true,
-//         msg: error,
-//       };
-//     });
-// }
 
 function getFilePath(filename) {
   try {
@@ -77,7 +55,7 @@ export class AtlasFileReader {
     }
   }
 
-  async getCountries(
+  async getCountries({
     currency,
     dialCode,
     native,
@@ -89,7 +67,7 @@ export class AtlasFileReader {
     geolocation,
     emojies,
     domain
-  ) {
+  }) {
     let countries = [];
     const data = await fsPromises.readFile(
       getFilePath("countries_states_cities.json"),
@@ -137,7 +115,7 @@ export class AtlasFileReader {
     return countries;
   }
 
-  async getStates(countryName, iso3, iso2, geolocation) {
+  async getStates({countryName, iso3, iso2, geolocation}) {
     if (
       (countryName !== undefined &&
         countryName != null &&
@@ -187,7 +165,7 @@ export class AtlasFileReader {
     }
   }
 
-  async getCities(countryName, stateName, geolocation) {
+  async getCities({countryName, stateName, geolocation}) {
     let cities = [];
     if (isNaN(Number(countryName)) && isNaN(Number(stateName))) {
       const data = await fsPromises.readFile(
